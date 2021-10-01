@@ -1,0 +1,37 @@
+.addcalender-container {
+  display: flex;
+  flex-direction: column;
+  width: 507px;
+  margin: 33px 0 0 61px;
+  h1 {
+    @include set-text-style(400, normal, 36px, 44px, $primary-color);
+    margin-bottom: 8px;
+  }
+  .addcalendar-form {
+    display: flex;
+    flex-direction: column;
+    .input-field {
+      @include set-text-style(400, normal, 18px, 22px, $inputfieldtext-color);
+      width: 507px;
+      height: 42px;
+      border-radius: 10px;
+      border: 1.5px solid $inputfieldborder-color;
+      padding: 10px;
+    }
+    .input-field__calendarName {
+      margin-bottom: 23px;
+    }
+    .input-field__description {
+      font-family: "lato", sans-serif;
+      resize: none;
+      width: 507px;
+      height: 100px;
+      margin-bottom: 47px;
+    }
+    .button-form__container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+}

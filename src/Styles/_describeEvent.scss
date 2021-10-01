@@ -1,0 +1,83 @@
+.describe-event__container {
+  z-index: 99;
+  position: absolute;
+  background-color: #ffffff;
+  width: 543px;
+  height: 249px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  .describe-event__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .describe-event__heading {
+      display: flex;
+      align-items: center;
+      width: 230px;
+      height: 25px;
+      flex: 1;
+      .event-duration {
+        @include set-text-style(700, normal, 20px, 22px, black);
+        margin-right: 20px;
+      }
+      .event-calendar {
+        @include set-text-style(400, normal, 14px, 17px, black);
+      }
+    }
+    .describe-event__button {
+      display: flex;
+      flex: 0.2;
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
+  .color-container {
+    width: 420px;
+    height: 5px;
+  }
+  .describe-event__body {
+    margin: 0 auto;
+    .from-to__container {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 6px 0px;
+      @include set-text-style(400, normal, 18px, 22px);
+      .date {
+        @include set-text-style(300, normal, 18px, 22px);
+      }
+    }
+    .participation__container {
+      h2 {
+        @include set-text-style(700, normal, 18px, 22px);
+        margin-bottom: 6px;
+      }
+      p {
+        @include set-text-style(300, normal, 14px, 17px);
+        margin-bottom: 6px;
+        margin-right: 5px;
+      }
+      .paraFlex {
+        background: #f7ffc6;
+        border-radius: 2px;
+        height: 18px;
+        padding: 1.5px 5px;
+        text-align: center;
+      }
+      .partFlex {
+        display: flex;
+        flex-direction: row;
+      }
+    }
+    .description__container {
+      h2 {
+        @include set-text-style(700, normal, 18px, 22px);
+        margin-bottom: 6px;
+      }
+      p {
+        @include set-text-style(300, normal, 18px, 22px);
+      }
+    }
+  }
+}

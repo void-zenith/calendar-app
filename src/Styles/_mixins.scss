@@ -1,0 +1,53 @@
+@mixin set-text-style(
+  $fontweight: 500,
+  $fontstyle: normal,
+  $fontsize: 24px,
+  $lineheight: 28.8px,
+  $color: black
+) {
+  font-weight: $fontweight;
+  font-style: $fontstyle;
+  font-size: $fontsize;
+  line-height: $lineheight;
+  color: $color;
+}
+
+@mixin dimension($height, $width) {
+  height: $height;
+  width: $width;
+}
+@mixin button-type($type) {
+  @if $type == "primary" {
+    background-color: $primary-color;
+    color: white;
+    &:hover {
+      background-color: lighten($primary-color, 5);
+    }
+  } @else if $type == "secondary" {
+    background-color: $secondary-color;
+    color: white;
+    &:hover {
+      background-color: lighten($secondary-color, 5);
+    }
+  } @else if $type== "outlined" {
+    border: 1px solid $primary-color;
+    background-color: white;
+    color: $primary-color;
+    &:hover {
+      background-color: darken(white, 5);
+    }
+  } @else if $type == "danger" {
+    background-color: $dangerRed-color;
+    color: white;
+    &:hover {
+      background-color: darken($dangerRed-color, 5);
+    }
+  } @else if $type == "disabled" {
+    cursor: not-allowed;
+    background-color: $disabledGrey-color;
+    color: white;
+    &:hover {
+      background-color: lighten($disabledGrey-color, 5);
+    }
+  }
+}
