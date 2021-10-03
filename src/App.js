@@ -1,8 +1,8 @@
-import React from "react";
-import Home from "./Container/Home";
-import "./Styles/styles.scss";
-import store from "./Redux/Store";
-import { Provider } from "react-redux";
+import React from 'react'
+import Home from './Container/Home'
+import './Styles/styles.scss'
+import store from './Redux/Store'
+import { Provider } from 'react-redux'
 const App = () => {
   return (
     <div>
@@ -10,7 +10,7 @@ const App = () => {
         <Home></Home>
       </Provider>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

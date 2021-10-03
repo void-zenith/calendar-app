@@ -1,140 +1,87 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Close from "../Icons/Close";
-import ColorChoose from "../Icons/ColorChoose";
-import Button from "./Button";
-import DateFnsUtils from "@date-io/date-fns";
-import { createEvent, editEvent, unselect } from "../Features/Calendar/EventSlice";
-import { removeEvent } from "../Features/Calendar/EventSlice";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-const CreateEvent = ({
-  label,
-  start_date,
-  end_date,
-  close,
-  position: [posX, posY],
-}) => {
-  const dispatch = useDispatch();
-  const selectedEvent = useSelector((state) => state.event.selected);
-  const [selectedStartDate, setSelectedStartDate] = useState(start_date);
-  const [selectedEndDate, setSelectedEndDate] = useState(end_date);
-  const [eventTitle, setEventtitle] = useState("");
-  //for description
-  const [description, setDescription] = useState("");
-  const hanldeDescription = (e) => {
-    setDescription(e.target.value);
-  };
-  //for participants
-  const [participants, setParticipants] = useState("");
-  const [objPart, setObjPart] = useState({});
-  const [arrPart, setArrPart] = useState([]);
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import DateFnsUtils from '@date-io/date-fns'
+import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers'
 
-  //for event bg color
-  const [color, setColor] = useState("#9EEC61");
+import Close from '../Icons/Close'
+import Button from './Button'
+import Colorpicker from './Colorpicker'
+import { createEvent, editEvent, unselect, removeEvent } from '../Features/Calendar/EventSlice'
 
-  const hanldeParticipants = (e) => {
-    setParticipants(e.target.value);
-    setObjPart({ part: participants });
-    setArrPart([objPart]);
-  };
-  const hanldeChangeEventTitle = (e) => {
-    setEventtitle((e.target.name = e.target.value));
-  };
+const CreateEvent = ({ event, label, start_date, end_date, close, position: [posX, posY] }) => {
+  const dispatch = useDispatch()
+  const selectedEvent = useSelector((state) => state.event.selected)
+
+  const [formData, setFormData] = useState({
+    title: '',
+    calendar: '',
+    color: 'red',
+    // start: event.start,
+    start: start_date,
+    end: end_date,
+    participants: '',
+    description: '',
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
 
   const handleClose = (e) => {
-    e.preventDefault();
-    dispatch(unselect());
-    close();
-  };
-  useEffect(() => {
-    if (selectedEvent !== null) {
-    }
-  }, []);
-  if (posX + 500 > window.innerWidth) {
-    posX = posX - 720;
+    e.preventDefault()
+    dispatch(unselect())
+    close()
   }
 
-  if (posY + 350 > window.innerHeight) {
-    posY = posY - 300;
-  }
-  let finalEventData = {
-    title: eventTitle,
-    start: selectedStartDate,
-    end: selectedEndDate,
-    description: description,
-    Participation: arrPart,
-    color: color,
-  };
   const handeCreateEvent = (e) => {
-    e.preventDefault();
+    e.preventDefault()
+    dispatch(createEvent(formData))
+    dispatch(unselect())
+    close()
+  }
 
-    dispatch(createEvent(finalEventData));
-    dispatch(unselect());
-    close();
-  };
   const handleUpdateEvent = (e) => {
-    e.preventDefault();
-    dispatch(editEvent(selectedEvent));
-    dispatch(unselect());
-    close();
-  };
+    e.preventDefault()
+    dispatch(editEvent(selectedEvent))
+    dispatch(unselect())
+    close()
+  }
+
   const handleCancel = (e) => {
-    e.preventDefault();
-    dispatch(removeEvent(selectedEvent));
-    dispatch(unselect());
-    close();
-  };
-  const colors = ["#9EEC61", "#E83A3A", "#37DCDC", "#376FDC", "#FF8E09"];
-  useEffect(() => {
-    if (selectedEvent !== null) {
-      setSelectedEndDate(selectedEvent.end);
-      setSelectedStartDate(selectedEvent.start);
-      setEventtitle(selectedEvent.title);
-      setDescription(selectedEvent.extendedProps.description);
-      for (
-        let i = 0;
-        i < selectedEvent.extendedProps.Participation.length;
-        i++
-      ) {
-        setParticipants(selectedEvent.extendedProps.Participation[i].part);
-      }
-    }
-  }, []);
+    e.preventDefault()
+    dispatch(removeEvent(selectedEvent))
+    dispatch(unselect())
+    close()
+  }
+
   return (
     <div
-      style={{ top: posY + "px", left: posX + "px" }}
-      className="create-event__container"
-    >
+      style={{ top: `${posY > 350 ? posY - 300 : posY}px`, left: `${posX > 780 ? posX - 550 : posX}px` }}
+      className="create-event__container">
       <div className="create-event__header">
         <h1>{label} Event</h1>
-        <div className="create-event__colorchoose">
-          {colors.map((col, id) => (
-            <button className="btnColor" key={id} onClick={() => setColor(col)}>
-              <ColorChoose color={col}></ColorChoose>
-            </button>
-          ))}
-        </div>
+
+        <Colorpicker />
+
         <select className="choose-calendar">
           <option value="calendar">Calendar</option>
           <option value="calendar">User</option>
         </select>
-        <Close onClick={handleClose}></Close>
+        <Close onClick={handleClose} />
       </div>
+
       <div className="create-event__body">
         <form>
           <input
             className="input-field input-eventTitle"
             placeholder="Event Title"
-            name="eventTitle"
+            name="title"
             type="text"
-            value={eventTitle}
-            onChange={hanldeChangeEventTitle}
-          ></input>
+            value={formData.title}
+            onChange={handleChange}
+          />
+
           <div className="datepicker-container">
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
@@ -144,12 +91,12 @@ const CreateEvent = ({
                 format="dd/MM/yyyy"
                 margin="normal"
                 id="Date-picker"
-                value={selectedStartDate}
-                onChange={setSelectedStartDate}
+                name="start"
+                value={formData.start}
+                onChange={(e) => setFormData({ ...formData, end: e })}
                 KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              ></KeyboardDatePicker>
+                  'aria-label': 'change date',
+                }}></KeyboardDatePicker>
             </MuiPickersUtilsProvider>
 
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -160,66 +107,49 @@ const CreateEvent = ({
                 format="dd/MM/yyyy"
                 margin="normal"
                 id="Date-picker"
-                value={selectedEndDate}
-                onChange={setSelectedEndDate}
+                name="end"
+                value={formData.end}
+                onChange={(e) => setFormData({ ...formData, end: e })}
                 KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              ></KeyboardDatePicker>
+                  'aria-label': 'change date',
+                }}></KeyboardDatePicker>
             </MuiPickersUtilsProvider>
           </div>
+
           <input
             className="input-field input-participants"
-            placeholder="participatns"
+            placeholder="Participants"
             name="participants"
             type="text"
-            value={participants}
-            onChange={hanldeParticipants}
-          ></input>
+            value={formData.participants}
+            onChange={handleChange}
+          />
+
           <textarea
             className="input-field__description"
-            name="eventDescription"
+            name="description"
             placeholder="Event Description"
-            value={description}
-            onChange={hanldeDescription}
+            value={formData.description}
+            onChange={handleChange}
             type="text"
-          ></textarea>
+          />
+
           <div className="button-form__container">
-            {label === "Create New" ? (
-              <Button
-                onClick={handleClose}
-                size="default"
-                variant="outlined"
-                label="Cancel"
-              ></Button>
+            {label === 'Create New' ? (
+              <Button onClick={handleClose} size="default" variant="outlined" label="Cancel"></Button>
             ) : (
-              <Button
-                onClick={handleCancel}
-                size="default"
-                variant="outlined"
-                label="Cancel Event"
-              ></Button>
+              <Button onClick={handleCancel} size="default" variant="outlined" label="Cancel Event"></Button>
             )}
-            {label === "Create New" ? (
-              <Button
-                onClick={handeCreateEvent}
-                size="large"
-                variant="primary"
-                label="Create Event"
-              ></Button>
+            {label === 'Create New' ? (
+              <Button onClick={handeCreateEvent} size="large" variant="primary" label="Create Event"></Button>
             ) : (
-              <Button
-                onClick={handleUpdateEvent}
-                size="large"
-                variant="primary"
-                label="Save"
-              ></Button>
+              <Button onClick={handleUpdateEvent} size="large" variant="primary" label="Save"></Button>
             )}
           </div>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CreateEvent;
+export default CreateEvent
