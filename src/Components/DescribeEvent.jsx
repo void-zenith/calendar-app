@@ -1,35 +1,31 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import Close from "../Icons/Close";
-import Edit from "../Icons/Edit";
-import { goToDisplayAll } from "../Features/Calendar/LayoutSlice";
-import { unselect } from "../Features/Calendar/EventSlice";
-
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import Close from '../Icons/Close'
+import Edit from '../Icons/Edit'
+import { goToDisplayAll } from '../Features/Calendar/LayoutSlice'
+import { unselect } from '../Features/Calendar/EventSlice'
 
 const DescribeEvent = ({ openEdit, close, position: [posX, posY] }) => {
-  const selectedEvent = useSelector((state) => state.event.selected);
-  const dispatch = useDispatch();
+  const selectedEvent = useSelector((state) => state.event.selected)
+  const dispatch = useDispatch()
   const handleClose = () => {
-    dispatch(goToDisplayAll());
-    dispatch(unselect());
-    close();
-  };
+    dispatch(goToDisplayAll())
+    dispatch(unselect())
+    close()
+  }
   const hanldeEdit = () => {
-    openEdit();
-  };
+    openEdit()
+  }
 
   if (posX + 500 > window.innerWidth) {
-    posX = posX - 720;
+    posX = posX - 720
   }
 
   if (posY + 350 > window.innerHeight) {
-    posY = posY - 300;
+    posY = posY - 300
   }
   return (
-    <div
-      style={{ top: posY + "px", left: posX + "px" }}
-      className="describe-event__container"
-    >
+    <div style={{ top: posY + 'px', left: posX + 'px' }} className="describe-event__container">
       <div className="describe-event__header">
         <div className="describe-event__heading">
           <h1 className="event-duration">Event</h1>
@@ -40,7 +36,7 @@ const DescribeEvent = ({ openEdit, close, position: [posX, posY] }) => {
           <Close onClick={handleClose}></Close>
         </div>
       </div>
-      <div style={{background:selectedEvent.backgroundColor}}className="color-container"></div>
+      <div style={{ background: selectedEvent.backgroundColor }} className="color-container"></div>
       <div className="describe-event__body">
         <div className="from-to__container">
           <h2>
@@ -67,7 +63,7 @@ const DescribeEvent = ({ openEdit, close, position: [posX, posY] }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DescribeEvent;
+export default DescribeEvent

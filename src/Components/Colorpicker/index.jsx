@@ -8,27 +8,27 @@ const ColorPicker = () => {
     <div className="colorbox">
       <input type="radio" name="color" id="green" />
       <label htmlFor="green">
-        <span class="green"></span>
+        <span className="green"></span>
       </label>
 
       <input type="radio" name="color" id="red" value="red" />
       <label htmlFor="red">
-        <span class="red"></span>
+        <span className="red"></span>
       </label>
 
       <input type="radio" name="color" id="teal" />
       <label htmlFor="teal">
-        <span class="teal"></span>
+        <span className="teal"></span>
       </label>
 
       <input type="radio" name="color" id="blue" />
       <label htmlFor="blue">
-        <span class="blue"></span>
+        <span className="blue"></span>
       </label>
 
       <input type="radio" name="color" id="orange" />
       <label htmlFor="orange">
-        <span class="orange"></span>
+        <span className="orange"></span>
       </label>
     </div>
   )

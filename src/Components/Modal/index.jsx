@@ -5,19 +5,14 @@ import DescribeEvent from '../DescribeEvent'
 import CreateEvent from '../CreateEvent'
 
 const Modal = ({ handleClose, event, type, addEvent, properties }) => {
+  console.log(event, event.jsElement)
   const handleEdit = () => {
     console.log('Handle close/edit')
   }
 
-  let posX, posY
-  if (type === 'view') {
-    posX = properties.clientX
-    posY = properties.clientY
-  } else {
-    posX = (event.box && event.box.clientX) || event.bounds.x
-    posY = (event.box && event.box.clientY) || event.bounds.y
-  }
-
+  let posX = event.jsEvent.target.offsetHeight
+  let posY = event.jsEvent.target.offsetWidth
+  console.log(posX, posY)
   return (
     <div
       className="modal-contain"
@@ -33,7 +28,7 @@ const Modal = ({ handleClose, event, type, addEvent, properties }) => {
         {type === 'view' ? (
           <DescribeEvent event={event} />
         ) : type === 'add' ? (
-          <CreateEvent event={event} addEvent={addEvent} handleClose={handleClose} />
+          <CreateEvent event={event} addEvent={addEvent} handleClose={handleClose} position={[100, 100]} />
         ) : (
           <CreateEvent event={event} addEvent={addEvent} handleClose={handleClose} handleEdit={handleEdit} />
         )}

@@ -8,7 +8,7 @@ import Button from './Button'
 import Colorpicker from './Colorpicker'
 import { createEvent, editEvent, unselect, removeEvent } from '../Features/Calendar/EventSlice'
 
-const CreateEvent = ({ event, label, start_date, end_date, close, position: [posX, posY] }) => {
+const CreateEvent = ({ event, handleClose, label, start_date, end_date, close, position: [posX, posY] }) => {
   const dispatch = useDispatch()
   const selectedEvent = useSelector((state) => state.event.selected)
 
@@ -16,7 +16,6 @@ const CreateEvent = ({ event, label, start_date, end_date, close, position: [pos
     title: '',
     calendar: '',
     color: 'red',
-    // start: event.start,
     start: start_date,
     end: end_date,
     participants: '',
@@ -28,11 +27,11 @@ const CreateEvent = ({ event, label, start_date, end_date, close, position: [pos
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleClose = (e) => {
-    e.preventDefault()
-    dispatch(unselect())
-    close()
-  }
+  // const handleClose = (e) => {
+  //   e.preventDefault()
+  //   dispatch(unselect())
+  //   close()
+  // }
 
   const handeCreateEvent = (e) => {
     e.preventDefault()
@@ -48,16 +47,9 @@ const CreateEvent = ({ event, label, start_date, end_date, close, position: [pos
     close()
   }
 
-  const handleCancel = (e) => {
-    e.preventDefault()
-    dispatch(removeEvent(selectedEvent))
-    dispatch(unselect())
-    close()
-  }
-
   return (
     <div
-      style={{ top: `${posY > 350 ? posY - 300 : posY}px`, left: `${posX > 780 ? posX - 550 : posX}px` }}
+      // style={{ top: `${posY > 350 ? posY - 300 : posY}px`, left: `${posX > 780 ? posX - 550 : posX}px` }}
       className="create-event__container">
       <div className="create-event__header">
         <h1>{label} Event</h1>
@@ -138,7 +130,7 @@ const CreateEvent = ({ event, label, start_date, end_date, close, position: [pos
             {label === 'Create New' ? (
               <Button onClick={handleClose} size="default" variant="outlined" label="Cancel"></Button>
             ) : (
-              <Button onClick={handleCancel} size="default" variant="outlined" label="Cancel Event"></Button>
+              <Button onClick={handleClose} size="default" variant="outlined" label="Cancel Event"></Button>
             )}
             {label === 'Create New' ? (
               <Button onClick={handeCreateEvent} size="large" variant="primary" label="Create Event"></Button>
