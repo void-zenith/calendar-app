@@ -10,8 +10,8 @@ const Modal = ({ handleClose, event, type, addEvent, properties }) => {
     console.log('Handle close/edit')
   }
 
-  let posX = event.jsEvent.target.offsetHeight
-  let posY = event.jsEvent.target.offsetWidth
+  let posX = event.jsEvent.x
+  let posY = event.jsEvent.y
   console.log(posX, posY)
   return (
     <div

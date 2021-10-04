@@ -135,7 +135,8 @@ const Calendar = () => {
         droppable={true}
         selectable={true}
         select={(e) => !modal.show && setModal({ ...modal, type: 'add', show: true, event: e })}
-        dateClick={(e) => !modal.show && setModal({ ...modal, type: 'add', show: true, event: e })}
+        dateClick={(e) => console.log(e.jsEvent)}
+        // dateClick={(e) => !modal.show && setModal({ ...modal, type: 'add', show: true, event: e })}
         eventDurationEditable={true}
         eventClick={(e) => !modal.show && setModal({ ...modal, type: 'view', show: true, event: e })}
         // eventClick={handleEventClick}
