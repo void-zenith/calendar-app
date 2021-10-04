@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   addCalendar: false,
   displayAll: true,
-  displayEventMenu: false,
 };
 const allFalse = {
   addCalendar: false,

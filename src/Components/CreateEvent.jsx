@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Close from "../Icons/Close";
-import ColorChoose from "../Icons/ColorChoose";
 import Button from "./Button";
 import DateFnsUtils from "@date-io/date-fns";
-import { createEvent, editEvent, unselect } from "../Features/Calendar/EventSlice";
+import {
+  createEvent,
+  editEvent,
+  postEvent,
+  unselect,
+} from "../Features/Calendar/EventSlice";
 import { removeEvent } from "../Features/Calendar/EventSlice";
 import {
   MuiPickersUtilsProvider,
@@ -19,8 +23,9 @@ const CreateEvent = ({
   close,
   position: [posX, posY],
 }) => {
+  const calendar = useSelector((state) => state.event.calendar);
   const dispatch = useDispatch();
-  const selectedEvent = useSelector((state) => state.event.selected);
+  const selectedEvent = useSelector((state) => state.event.selectedEvent);
   const [selectedStartDate, setSelectedStartDate] = useState(start_date);
   const [selectedEndDate, setSelectedEndDate] = useState(end_date);
   const [eventTitle, setEventtitle] = useState("");
@@ -39,7 +44,7 @@ const CreateEvent = ({
 
   const hanldeParticipants = (e) => {
     setParticipants(e.target.value);
-    setObjPart({ part: participants });
+    setObjPart({ email: participants });
     setArrPart([objPart]);
   };
   const hanldeChangeEventTitle = (e) => {
@@ -51,10 +56,6 @@ const CreateEvent = ({
     dispatch(unselect());
     close();
   };
-  useEffect(() => {
-    if (selectedEvent !== null) {
-    }
-  }, []);
   if (posX + 500 > window.innerWidth) {
     posX = posX - 720;
   }
@@ -62,18 +63,21 @@ const CreateEvent = ({
   if (posY + 350 > window.innerHeight) {
     posY = posY - 300;
   }
-  let finalEventData = {
-    title: eventTitle,
-    start: selectedStartDate,
-    end: selectedEndDate,
-    description: description,
-    Participation: arrPart,
-    color: color,
-  };
-  const handeCreateEvent = (e) => {
-    e.preventDefault();
 
-    dispatch(createEvent(finalEventData));
+  const handeCreateEvent = (e) => {
+    const start = new Date(selectedStartDate).toISOString();
+    const end = new Date(selectedEndDate).toISOString();
+    let finalEventData = {
+      title: eventTitle,
+      start_date: start,
+      end_date: end,
+      description: description,
+      participants: [{ email: "asfsdfsf@gmail.com" }],
+      color: "red",
+      calendar: 2, //this is id of calendar
+    };
+    e.preventDefault();
+    dispatch(postEvent(finalEventData));
     dispatch(unselect());
     close();
   };
@@ -98,10 +102,10 @@ const CreateEvent = ({
       setDescription(selectedEvent.extendedProps.description);
       for (
         let i = 0;
-        i < selectedEvent.extendedProps.Participation.length;
+        i < selectedEvent.extendedProps.participants.length;
         i++
       ) {
-        setParticipants(selectedEvent.extendedProps.Participation[i].part);
+        setParticipants(selectedEvent.extendedProps.participants[i].email);
       }
     }
   }, []);
@@ -114,9 +118,12 @@ const CreateEvent = ({
         <h1>{label} Event</h1>
         <div className="create-event__colorchoose">
           {colors.map((col, id) => (
-            <button className="btnColor" key={id} onClick={() => setColor(col)}>
-              <ColorChoose color={col}></ColorChoose>
-            </button>
+            <div key={id}>
+              <input type="radio" name="color" id={col} value={col}></input>
+              <label htmlFor={col} onClick={() => setColor(col)}>
+                <span style={{ background: col }} className={col}></span>
+              </label>
+            </div>
           ))}
         </div>
         <select className="choose-calendar">

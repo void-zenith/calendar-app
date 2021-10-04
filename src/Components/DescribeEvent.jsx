@@ -7,7 +7,7 @@ import { unselect } from "../Features/Calendar/EventSlice";
 
 
 const DescribeEvent = ({ openEdit, close, position: [posX, posY] }) => {
-  const selectedEvent = useSelector((state) => state.event.selected);
+  const selectedEvent = useSelector((state) => state.event.selectedEvent);
   const dispatch = useDispatch();
   const handleClose = () => {
     dispatch(goToDisplayAll());
@@ -54,7 +54,7 @@ const DescribeEvent = ({ openEdit, close, position: [posX, posY] }) => {
           <h2>Participation</h2>
           <div className="partFlex">
             {selectedEvent &&
-              selectedEvent.extendedProps.Participation.map((ev, id) => (
+              selectedEvent.extendedProps.participants.map((ev, id) => (
                 <p className="paraFlex" key={id}>
                   {ev.part}
                 </p>

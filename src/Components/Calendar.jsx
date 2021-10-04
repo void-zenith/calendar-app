@@ -8,8 +8,13 @@ import CreateEvent from "./CreateEvent";
 import DescribeEvent from "./DescribeEvent";
 import { useDispatch } from "react-redux";
 import { selectEvent, unselect } from "../Features/Calendar/EventSlice";
+import { goToAddCalendar } from "../Features/Calendar/LayoutSlice";
+import { selectCalendar } from "../Features/Calendar/EventSlice";
+import { getCalendar, getEvents } from "../Features/Calendar/EventSlice";
+import { emptyList } from "../Features/Calendar/EventSlice";
 const Calendar = () => {
   const event = useSelector((state) => state.event.events);
+  const calendar = useSelector((state) => state.event.calendar);
   const dispatch = useDispatch();
   //for toggling create event
   const [showMenu, setShowMenu] = useState(false);
@@ -22,14 +27,15 @@ const Calendar = () => {
   const [end_date, setEnd_date] = useState(Date.now.toLocaleString());
 
   //for selecting calendar
-  const [calendarChoose, setCalendarChoose] = useState("Default");
-  //for searching input
   const [searchValue, setSearchValue] = useState("");
   const hanldeSarch = (e) => {
     setSearchValue(e.target.value);
   };
   //select event
   useEffect(() => {
+    dispatch(emptyList());
+    dispatch(getEvents());
+    dispatch(getCalendar());
     dispatch(unselect());
   }, []);
   const setCreateEvent = ([posX, posY]) => {
@@ -50,7 +56,11 @@ const Calendar = () => {
   };
 
   const handleCalendarSelect = (e) => {
-    setCalendarChoose(e.target.value);
+    if (e.target.value === "Add Calendar") {
+      dispatch(goToAddCalendar());
+    } else {
+      dispatch(selectCalendar(e.target.value));
+    }
   };
   return (
     <>
@@ -95,8 +105,13 @@ const Calendar = () => {
         </>
       )}
       <div className="header-sel-inp">
-        <select onChange={handleCalendarSelect}>
+        <select className="" onChange={handleCalendarSelect}>
           <option value="Default">Default</option>
+          {calendar.map((cal, id) => (
+            <option value={cal.name} key={id}>
+              {cal.name}
+            </option>
+          ))}
           <option value="Add Calendar">Add Calendar</option>
         </select>
         <input
