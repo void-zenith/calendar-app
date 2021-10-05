@@ -26,7 +26,7 @@ import SearchIcon from "../Icons/SearchIcon";
 const Calendar = () => {
   const dispatch = useDispatch();
   const calendar = useSelector((state) => state.event.calendar);
-
+  const events = useSelector((state) => state.event.events);
   const eventList = useSelector(eventsList);
 
   //for toggling create event
@@ -40,9 +40,17 @@ const Calendar = () => {
 
   //for selecting calendar
   const [searchValue, setSearchValue] = useState("");
-  const hanldeSarch = (e) => {
+  const hanldeSearch = (e) => {
     setSearchValue(e.target.value);
+    console.log(searchData);
   };
+  const searchData = events
+    .filter((event) =>
+      event.title.toLowerCase().includes(searchValue.toLowerCase())
+        ? event
+        : searchValue === "" && event
+    )
+    .map((event) => console.log(event));
   //select event
   useEffect(() => {
     dispatch(emptyList());
@@ -176,7 +184,7 @@ const Calendar = () => {
             name="search"
             value={searchValue}
             placeholder="Search"
-            onChange={hanldeSarch}
+            onChange={hanldeSearch}
           ></input>
           <div className="icon-search">
             <SearchIcon></SearchIcon>
