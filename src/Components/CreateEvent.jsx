@@ -66,8 +66,21 @@ const CreateEvent = ({ label, start_date, end_date, close, position: [posX, posY
     dispatch(unselect());
     close();
   };
+
   const handleUpdateEvent = (e) => {
     e.preventDefault();
+    const start = new Date(selectedStartDate).toISOString();
+    const end = new Date(selectedEndDate).toISOString();
+    let finalEventData = {
+      title: eventTitle,
+      start: start,
+      end: end,
+      description: description,
+      // participants: [{ email: participants }],
+      participants: [],
+      color: colour,
+      calendar: selectedCalendar, //this is id of calendar
+    };
     dispatch(editEvent(selectedEvent));
     dispatch(unselect());
     close();

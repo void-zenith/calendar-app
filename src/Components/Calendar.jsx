@@ -16,22 +16,20 @@ import { editEvent, selectEvent, unselect } from "../Features/Calendar/EventSlic
 import { goToAddCalendar } from "../Features/Calendar/LayoutSlice";
 import { selectCalendar } from "../Features/Calendar/EventSlice";
 import { getCalendar, getEvents } from "../Features/Calendar/EventSlice";
-import { emptyList } from "../Features/Calendar/EventSlice";
+import { emptyList, eventsList } from "../Features/Calendar/EventSlice";
 
 const Calendar = () => {
-  const calendar = useSelector((state) => state.event.calendar);
-  // const selCal = useSelector((state) => state.event.selectedCalendar);
-  const eventList = useSelector((state) => state.event.events);
-
-  // const getSelectedCalendarEvent = selCal.
   const dispatch = useDispatch();
+  const calendar = useSelector((state) => state.event.calendar);
+
+  const eventList = useSelector(eventsList);
+
   //for toggling create event
   const [showMenu, setShowMenu] = useState(false);
   //for selecting between create, describe, and edit menu
   const [showMode, setShowMode] = useState("Create");
   //for setting up position of pup up
   const [position, setPosition] = useState([0, 0]);
-
   const [start_date, setStart_date] = useState(Date.now.toLocaleString());
   const [end_date, setEnd_date] = useState(Date.now.toLocaleString());
 
@@ -47,6 +45,7 @@ const Calendar = () => {
     dispatch(getCalendar());
     dispatch(unselect());
   }, []);
+
   const setCreateEvent = ([posX, posY]) => {
     setPosition([posX, posY]);
     setShowMenu(true);

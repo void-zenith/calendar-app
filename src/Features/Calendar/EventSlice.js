@@ -9,6 +9,7 @@ const initialState = {
   events: [],
   selectedEvent: null,
 };
+
 export const getCalendar = createAsyncThunk("event/getCalendar", async () => {
   return await get_all_calendar();
 });
@@ -24,6 +25,7 @@ export const postEvent = createAsyncThunk("event/postEvent", async (eventData) =
 export const editEvent = createAsyncThunk("event/editEvent", async (eventData) => {
   return await edit_event(eventData);
 });
+
 export const cancelEvent = createAsyncThunk("event/cancelEvent", async (id) => {
   return await cancel_event(id);
 });
@@ -32,35 +34,18 @@ const EventSlice = createSlice({
   name: "event",
   initialState,
   reducers: {
-    //reducers for event
-    // createEvent: (state, action) => {
-    //   state.events = [...state.events, action.payload];
-    // },
-    // editEvent: (state, action) => {
-    //   state.events = state.events.map((ev) =>
-    //     ev.id === action.payload.id ? action.payload : ev
-    //   );
-    // },
-    // removeEvent: (state, action) => {
-    //   state.events = state.events.filter((ev) => ev.id !== action.payload);
-    // },
     selectEvent: (state, action) => {
       state.selectedEvent = action.payload;
     },
-    //to empty the list
     emptyList: (state, action) => {
-      state.calendar = [];
       state.events = [];
     },
-    //reducer for unselecting event
     unselect: (state) => {
       state.selectedEvent = null;
     },
-    //reducers for calendar
     createCalendar: (state, action) => {
       state.calendar = [...state.calendar, action.payload];
     },
-    //selection of calendar
     selectCalendar: (state, action) => {
       state.selectedCalendar = action.payload;
     },
@@ -124,5 +109,7 @@ const EventSlice = createSlice({
 });
 
 export const { emptyList, selectEvent, unselect, createCalendar, selectCalendar } = EventSlice.actions;
+
+export const eventsList = (state) => state.event.events;
 
 export default EventSlice.reducer;
