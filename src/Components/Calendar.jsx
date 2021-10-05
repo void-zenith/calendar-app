@@ -20,11 +20,12 @@ const Calendar = () => {
     const newEvent = {
       id: parseInt(e.event.id),
       title: e.event._def.title,
-      allDay: e.event._def.allDay,
+      allDay: e.oldEvent.allDay,
+      color: e.oldEvent.backgroundColor,
       start: e.event._instance.range.start,
       end: e.event._instance.range.end,
-      Participation: e.event._def.Participation,
-      description: e.event._def.description,
+      Participation: e.oldEvent.extendedProps.Participation,
+      description: e.event.extendedProps.description,
     }
     console.log(newEvent, e)
     dispatch(updateEvent(newEvent))
@@ -89,14 +90,10 @@ const Calendar = () => {
         dayMaxEvents={true}
         select={(e) => !modal.show && setModal({ ...modal, type: 'add', show: true, event: e })}
         dateClick={(e) => !modal.show && setModal({ ...modal, type: 'add', show: true, event: e })}
-        // date click -- redirect to day view?
         eventClick={(e) => !modal.show && setModal({ ...modal, type: 'view', show: true, event: e })}
         eventChange={editEvent}
         eventDurationEditable={true}
         eventResizableFromStart={true}
-        // eventDragStart={(e) => console.log(e)}
-        // eventDragStop={(e) => console.log('Event drag stop', e)}
-        // eventDrop={(e) => console.log('Event drop stopp', e)}
       />
     </>
   )
