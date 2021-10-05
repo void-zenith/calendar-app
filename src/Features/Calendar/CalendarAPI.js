@@ -1,15 +1,29 @@
 import axios from "axios";
 
-let endpoint = "http://ba15-49-244-6-19.ngrok.io/api/calendar/";
-
+const url = (label) => {
+  return `http://de2b-49-244-6-19.ngrok.io/api/${label}/`;
+};
 export const get_all_calendar = async () => {
-  const response = await axios.get(endpoint);
+  const response = await axios.get(url("calendar"));
   return response;
 };
 
 export const get_all_events = async () => {
-  const response = await axios.get(
-    "http://ba15-49-244-6-19.ngrok.io/api/event/"
-  );
+  const response = await axios.get(url("event"));
   return response;
+};
+
+export const post_event = async (eventData) => {
+  return await axios.post(
+    url("event"), //event endpoint
+    { ...eventData }
+  );
+};
+
+export const cancel_event = async (id) => {
+  return await axios.delete(`${url("event")}${id}/`);
+};
+
+export const edit_event = async (eventData) => {
+  return await axios.patch(`${url("event")}${eventData.id}/`, { ...eventData });
 };

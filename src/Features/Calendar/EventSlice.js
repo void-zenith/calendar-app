@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { get_all_calendar, get_all_events } from "./CalendarAPI";
-
-import axios from "axios";
+import {
+  get_all_calendar,
+  get_all_events,
+  post_event,
+  cancel_event,
+  edit_event,
+} from "./CalendarAPI";
 
 const initialState = {
   isLoading: false,
@@ -15,23 +19,26 @@ export const getCalendar = createAsyncThunk("event/getCalendar", async () => {
   return await get_all_calendar();
 });
 
-export const getEvents = createAsyncThunk("event/getEvets", async () => {
+export const getEvents = createAsyncThunk("event/getEvents", async () => {
   return await get_all_events();
 });
 
 export const postEvent = createAsyncThunk(
   "event/postEvent",
-  async (eventData, { rejectWithValue }) => {
-    try {
-      return await axios.post(
-        "http://ba15-49-244-6-19.ngrok.io/api/event/", //event endpoint
-        { ...eventData }
-      );
-    } catch (err) {
-      return rejectWithValue(err);
-    }
+  async (eventData) => {
+    return await post_event(eventData);
   }
 );
+
+export const editEvent = createAsyncThunk(
+  "event/editEvent",
+  async (eventData) => {
+    return await edit_event(eventData);
+  }
+);
+export const cancelEvent = createAsyncThunk("event/cancelEvent", async (id) => {
+  return await cancel_event(id);
+});
 
 const EventSlice = createSlice({
   name: "event",
@@ -41,18 +48,18 @@ const EventSlice = createSlice({
     // createEvent: (state, action) => {
     //   state.events = [...state.events, action.payload];
     // },
-    editEvent: (state, action) => {
-      state.events = state.events.map((ev) =>
-        ev.id === action.payload.id ? action.payload : ev
-      );
-    },
-    removeEvent: (state, action) => {
-      state.events = state.events.filter((ev) => ev.id !== action.payload);
-    },
+    // editEvent: (state, action) => {
+    //   state.events = state.events.map((ev) =>
+    //     ev.id === action.payload.id ? action.payload : ev
+    //   );
+    // },
+    // removeEvent: (state, action) => {
+    //   state.events = state.events.filter((ev) => ev.id !== action.payload);
+    // },
     selectEvent: (state, action) => {
       state.selectedEvent = action.payload;
     },
-    //to empty the list 
+    //to empty the list
     emptyList: (state, action) => {
       state.calendar = [];
       state.events = [];
@@ -103,17 +110,33 @@ const EventSlice = createSlice({
       })
       .addCase(postEvent.rejected, (state, action) => {
         state.isLoading = false;
+      })
+      //case for canceling the selected event
+      .addCase(cancelEvent.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(cancelEvent.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(cancelEvent.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(editEvent.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editEvent.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(editEvent.rejected, (state, action) => {
+        state.isLoading = false;
       });
   },
 });
 
 export const {
   emptyList,
-  createEvent,
-  editEvent,
   selectEvent,
   unselect,
-  removeEvent,
   createCalendar,
   selectCalendar,
 } = EventSlice.actions;

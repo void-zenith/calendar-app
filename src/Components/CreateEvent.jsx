@@ -5,15 +5,13 @@ import Close from "../Icons/Close";
 import Button from "./Button";
 import DateFnsUtils from "@date-io/date-fns";
 import {
-  createEvent,
+  cancelEvent,
   editEvent,
   postEvent,
   unselect,
 } from "../Features/Calendar/EventSlice";
-import { removeEvent } from "../Features/Calendar/EventSlice";
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 const CreateEvent = ({
@@ -23,7 +21,6 @@ const CreateEvent = ({
   close,
   position: [posX, posY],
 }) => {
-  const calendar = useSelector((state) => state.event.calendar);
   const dispatch = useDispatch();
   const selectedEvent = useSelector((state) => state.event.selectedEvent);
   const [selectedStartDate, setSelectedStartDate] = useState(start_date);
@@ -37,7 +34,6 @@ const CreateEvent = ({
   //for participants
   const [participants, setParticipants] = useState("");
   const [objPart, setObjPart] = useState({});
-  const [arrPart, setArrPart] = useState([]);
 
   //for event bg color
   const [color, setColor] = useState("#9EEC61");
@@ -45,7 +41,6 @@ const CreateEvent = ({
   const hanldeParticipants = (e) => {
     setParticipants(e.target.value);
     setObjPart({ email: participants });
-    setArrPart([objPart]);
   };
   const hanldeChangeEventTitle = (e) => {
     setEventtitle((e.target.name = e.target.value));
@@ -69,10 +64,10 @@ const CreateEvent = ({
     const end = new Date(selectedEndDate).toISOString();
     let finalEventData = {
       title: eventTitle,
-      start_date: start,
-      end_date: end,
+      start: start,
+      end: end,
       description: description,
-      participants: [{ email: "asfsdfsf@gmail.com" }],
+      participants: [{ email: participants }],
       color: "red",
       calendar: 2, //this is id of calendar
     };
@@ -89,7 +84,7 @@ const CreateEvent = ({
   };
   const handleCancel = (e) => {
     e.preventDefault();
-    dispatch(removeEvent(selectedEvent));
+    dispatch(cancelEvent(selectedEvent.id));
     dispatch(unselect());
     close();
   };

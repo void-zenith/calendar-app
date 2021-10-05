@@ -18,8 +18,12 @@ import { selectCalendar } from "../Features/Calendar/EventSlice";
 import { getCalendar, getEvents } from "../Features/Calendar/EventSlice";
 import { emptyList } from "../Features/Calendar/EventSlice";
 const Calendar = () => {
-  const event = useSelector((state) => state.event.events);
   const calendar = useSelector((state) => state.event.calendar);
+  const selCal = useSelector((state) => state.event.selectedCalendar);
+  const allEv = useSelector((state) => state.event.events);
+  const event = selCal !== null ? selCal.events : allEv;
+
+  // const getSelectedCalendarEvent = selCal.
   const dispatch = useDispatch();
   //for toggling create event
   const [showMenu, setShowMenu] = useState(false);
@@ -61,10 +65,11 @@ const Calendar = () => {
   };
 
   const handleCalendarSelect = (e) => {
+    console.log(e.target.value);
     if (e.target.value === "Add Calendar") {
       dispatch(goToAddCalendar());
     } else {
-      dispatch(selectCalendar(e.target.value));
+      dispatch(selectCalendar(calendar[e.target.value]));
     }
   };
 
@@ -82,7 +87,6 @@ const Calendar = () => {
       setView(e.target.value);
     }
   };
-  console.log(view);
   return (
     <>
       {showMenu && (
@@ -133,9 +137,8 @@ const Calendar = () => {
           ))}
         </select>
         <select className="" onChange={handleCalendarSelect}>
-          <option value="Default">Default</option>
           {calendar.map((cal, id) => (
-            <option value={cal.name} key={id}>
+            <option value={id} key={id}>
               {cal.name}
             </option>
           ))}
