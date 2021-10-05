@@ -24,6 +24,7 @@ export const postEvent = createAsyncThunk("event/postEvent", async (eventData) =
 export const editEvent = createAsyncThunk("event/editEvent", async (eventData) => {
   return await edit_event(eventData);
 });
+
 export const cancelEvent = createAsyncThunk("event/cancelEvent", async (id) => {
   return await cancel_event(id);
 });
@@ -83,6 +84,7 @@ const EventSlice = createSlice({
       })
       .addCase(postEvent.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.events.push(action.payload.data);
       })
       .addCase(postEvent.rejected, (state, action) => {
         state.isLoading = false;
@@ -93,6 +95,7 @@ const EventSlice = createSlice({
       })
       .addCase(cancelEvent.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.events.filter((ev) => ev.id === action.payload.id);
       })
       .addCase(cancelEvent.rejected, (state, action) => {
         state.isLoading = false;
@@ -102,6 +105,7 @@ const EventSlice = createSlice({
       })
       .addCase(editEvent.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.events = state.events.map((ev) => (ev.id === action.payload.id ? action.payload.data : ev));
       })
       .addCase(editEvent.rejected, (state, action) => {
         state.isLoading = false;

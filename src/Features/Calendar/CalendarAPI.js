@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const url = (label) => {
-  return `http://fa7e-49-244-6-19.ngrok.io/api/${label}/`;
+  return `http://b3d1-49-244-6-19.ngrok.io/api/${label}/`;
 };
 export const get_all_calendar = async () => {
   const response = await axios.get(url("calendar"));

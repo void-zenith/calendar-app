@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 
@@ -10,22 +10,22 @@ import { postEvent, editEvent } from "../Features/Calendar/EventSlice";
 
 const CreateEvent = ({ event, handleClose, label, type }) => {
   const dispatch = useDispatch();
-  console.log(event.event);
+  const current_calendar = useSelector((state) => state.currentCalendar);
   let initState =
     type === "add"
       ? {
           title: "",
-          calendar: "",
+          calendar: current_calendar,
           color: "blue",
           start: event.start,
           end: event.end,
-          participants: "",
+          participants: [],
           description: "",
         }
       : {
           title: event.event._def.title,
           calendar: "",
-          color: event.event._def.extendedProps.color,
+          color: event.event.backgroundColor,
           start: event.event._instance.range.start,
           end: event.event._instance.range.end,
           Participation: event.event._def.extendedProps.Participation,
@@ -44,11 +44,10 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
 
     if (type === "add") {
       console.log("Add submit");
-      const start = new Date(formData.start).toISOString();
-      const end = new Date(formData.end).toISOString();
-      console.log(start, end);
-      // const sendData = { ...formData, start: formData.start.toISOString(), end: formData.start.toISOString() };
-      // dispatch(postEvent(formData));
+      const start = event.start !== e.start ? new Date(formData.start).toISOString() : event.start;
+      const end = event.end !== e.end ? new Date(formData.end).toISOString() : event.end;
+      const sendData = { ...formData, start: start, end: end };
+      dispatch(postEvent(sendData));
     } else {
       console.log("Edit date change");
       const newEvent = {
@@ -56,7 +55,6 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
         allDay: true,
         ...formData,
       };
-      console.log(newEvent);
       dispatch(editEvent(newEvent));
     }
     handleClose();
@@ -97,7 +95,7 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
                 id="Date-picker"
                 name="start"
                 value={formData.start}
-                onChange={(e) => setFormData({ ...formData, end: e })}
+                onChange={(e) => setFormData({ ...formData, start: e })}
                 KeyboardButtonProps={{
                   "aria-label": "change date",
                 }}></KeyboardDatePicker>
