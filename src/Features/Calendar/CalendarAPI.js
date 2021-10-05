@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let endpoint = "http://5329-49-244-17-231.ngrok.io/api/calendar/";
+let endpoint = "http://ba15-49-244-6-19.ngrok.io/api/calendar/";
 
 export const get_all_calendar = async () => {
   const response = await axios.get(endpoint);
@@ -9,7 +9,7 @@ export const get_all_calendar = async () => {
 
 export const get_all_events = async () => {
   const response = await axios.get(
-    "http://5329-49-244-17-231.ngrok.io/api/event/"
+    "http://ba15-49-244-6-19.ngrok.io/api/event/"
   );
   return response;
 };

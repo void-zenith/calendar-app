@@ -24,7 +24,7 @@ export const postEvent = createAsyncThunk(
   async (eventData, { rejectWithValue }) => {
     try {
       return await axios.post(
-        "http://641b-49-244-17-231.ngrok.io/api/event/", //event endpoint
+        "http://ba15-49-244-6-19.ngrok.io/api/event/", //event endpoint
         { ...eventData }
       );
     } catch (err) {
