@@ -1,18 +1,29 @@
-import axios from 'axios'
+import axios from "axios";
 
-let endpoint = 'http://b786-49-244-40-252.ngrok.io/api/calendar/'
-let url = 'http://b786-49-244-40-252.ngrok.io/api/calendar/'
-
+const url = (label) => {
+  return `http://fa7e-49-244-6-19.ngrok.io/api/${label}/`;
+};
 export const get_all_calendar = async () => {
-  const response = await axios.get(endpoint)
-  return response
-}
+  const response = await axios.get(url("calendar"));
+  return response;
+};
 
-export const getAllEvents = async () => await axios.get(url)
-// export const getOne = async (id) => await axios.get(`${url}${id}/`)
+export const get_all_events = async () => {
+  const response = await axios.get(url("event"));
+  return response;
+};
 
-export const create = async (data) => await axios.post(`${url}`, data)
+export const post_event = async (eventData) => {
+  return await axios.post(
+    url("event"), //event endpoint
+    { ...eventData }
+  );
+};
 
-export const edit = async (data) => await axios.patch(`${url}${data.id}/`, data)
+export const cancel_event = async (id) => {
+  return await axios.delete(`${url("event")}${id}/`);
+};
 
-export const remove = async (id) => await axios.delete(`${url}${id}/`)
+export const edit_event = async (eventData) => {
+  return await axios.patch(`${url("event")}${eventData.id}/`, { ...eventData });
+};

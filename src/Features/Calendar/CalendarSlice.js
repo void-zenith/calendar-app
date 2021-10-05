@@ -1,27 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit'
+import axios from "axios";
 
-const initialState = {
-  isLoading: false,
-  calendar: [],
-  selected: null,
-}
+const url = (label) => {
+  return `http://de2b-49-244-6-19.ngrok.io/api/${label}/`;
+};
+export const get_all_calendar = async () => {
+  const response = await axios.get(url("calendar"));
+  return response;
+};
 
-const CalendarSlice = createSlice({
-  name: 'calendar',
-  initialState,
-  reducers: {
-    createCalendar: (state, action) => {
-      state.calendar = [...state.calendar, action.payload]
-    },
-    selectCalendar: (state, action) => {
-      state.selected = action.payload
-    },
-    unselectCalendar: (state) => {
-      state.selected = null
-    },
-  },
-})
+export const get_all_events = async () => {
+  const response = await axios.get(url("event"));
+  return response;
+};
 
-export const { createCalendar, selectCalendar, unselectCalendar } = CalendarSlice.actions
+export const post_event = async (eventData) => {
+  return await axios.post(
+    url("event"), //event endpoint
+    { ...eventData }
+  );
+};
 
-export default CalendarSlice.reducer
+export const cancel_event = async (id) => {
+  return await axios.delete(`${url("event")}${id}/`);
+};
+
+export const edit_event = async (eventData) => {
+  return await axios.patch(`${url("event")}${eventData.id}/`, { ...eventData });

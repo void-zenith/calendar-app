@@ -1,62 +1,66 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import DateFnsUtils from '@date-io/date-fns'
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 
-import Close from '../Icons/Close'
-import Button from './Button'
-import Colorpicker from './Colorpicker'
-import { createEvent, editEvent } from '../Features/Calendar/EventSlice'
+import Close from "../Icons/Close";
+import Button from "./Button";
+import Colorpicker from "./Colorpicker";
+import { postEvent, editEvent } from "../Features/Calendar/EventSlice";
 
 const CreateEvent = ({ event, handleClose, label, type }) => {
-  const dispatch = useDispatch()
-  console.log(event.event)
+  const dispatch = useDispatch();
+  console.log(event.event);
   let initState =
-    type === 'add'
+    type === "add"
       ? {
-          title: '',
-          calendar: '',
-          color: 'blue',
+          title: "",
+          calendar: "",
+          color: "blue",
           start: event.start,
           end: event.end,
-          participants: '',
-          description: '',
+          participants: "",
+          description: "",
         }
       : {
           title: event.event._def.title,
-          calendar: '',
+          calendar: "",
           color: event.event._def.extendedProps.color,
           start: event.event._instance.range.start,
           end: event.event._instance.range.end,
           Participation: event.event._def.extendedProps.Participation,
           description: event.event._def.extendedProps.description,
-        }
+        };
 
-  const [formData, setFormData] = useState(initState)
+  const [formData, setFormData] = useState(initState);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (type === 'add') {
-      console.log('Add submit')
-      dispatch(createEvent(formData))
+    if (type === "add") {
+      console.log("Add submit");
+      const start = new Date(formData.start).toISOString();
+      const end = new Date(formData.end).toISOString();
+      console.log(start, end);
+      // const sendData = { ...formData, start: formData.start.toISOString(), end: formData.start.toISOString() };
+      // dispatch(postEvent(formData));
     } else {
-      console.log('Edit date change')
+      console.log("Edit date change");
       const newEvent = {
         id: parseInt(event.event.id),
         allDay: true,
         ...formData,
-      }
-      console.log(newEvent)
-      dispatch(editEvent(newEvent))
+      };
+      console.log(newEvent);
+      dispatch(editEvent(newEvent));
     }
-    handleClose()
-  }
+    handleClose();
+  };
 
   return (
     <div className="create-event__container">
@@ -95,7 +99,7 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
                 value={formData.start}
                 onChange={(e) => setFormData({ ...formData, end: e })}
                 KeyboardButtonProps={{
-                  'aria-label': 'change date',
+                  "aria-label": "change date",
                 }}></KeyboardDatePicker>
             </MuiPickersUtilsProvider>
 
@@ -111,7 +115,7 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
                 value={formData.end}
                 onChange={(e) => setFormData({ ...formData, end: e })}
                 KeyboardButtonProps={{
-                  'aria-label': 'change date',
+                  "aria-label": "change date",
                 }}></KeyboardDatePicker>
             </MuiPickersUtilsProvider>
           </div>
@@ -135,7 +139,7 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
           />
 
           <div className="button-form__container">
-            {label === 'Create New' ? (
+            {label === "Create New" ? (
               <Button type="button" onClick={handleClose} size="default" variant="outlined" label="Cancel"></Button>
             ) : (
               <Button
@@ -145,7 +149,7 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
                 variant="outlined"
                 label="Cancel Event"></Button>
             )}
-            {label === 'Create New' ? (
+            {label === "Create New" ? (
               <Button type="submit" size="large" variant="primary" label="Create Event"></Button>
             ) : (
               <Button type="submit" size="large" variant="primary" label="Save"></Button>
@@ -154,7 +158,7 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CreateEvent
+export default CreateEvent;
