@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+//full calendar packages
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
+//end of full calendar packages
+
 import CreateEvent from "./CreateEvent";
 import DescribeEvent from "./DescribeEvent";
 import { useDispatch } from "react-redux";
@@ -62,6 +67,22 @@ const Calendar = () => {
       dispatch(selectCalendar(e.target.value));
     }
   };
+
+  //view dayGridMonth timeGridWeek listWeek dayGridWeek
+  const views = ["dayGridMonth", "timeGridWeek", "listWeek", "dayGridWeek"];
+  const [view, setView] = useState("dayGridMonth");
+  const hanldeViewChange = (e) => {
+    if (e.target.value === "dayGridMonth") {
+      setView(e.target.value);
+    } else if (e.target.value === "timeGridWeek") {
+      setView(e.target.value);
+    } else if (e.target.value === "listWeek") {
+      setView(e.target.value);
+    } else if (e.target.value === "dayGridWeek") {
+      setView(e.target.value);
+    }
+  };
+  console.log(view);
   return (
     <>
       {showMenu && (
@@ -95,7 +116,6 @@ const Calendar = () => {
               end_date={end_date}
               close={() => {
                 setShowMode("Create");
-
                 setShowMenu(false);
               }}
               position={position}
@@ -105,6 +125,13 @@ const Calendar = () => {
         </>
       )}
       <div className="header-sel-inp">
+        <select className="" onChange={hanldeViewChange}>
+          {views.map((view, id) => (
+            <option value={view} key={id}>
+              {view}
+            </option>
+          ))}
+        </select>
         <select className="" onChange={handleCalendarSelect}>
           <option value="Default">Default</option>
           {calendar.map((cal, id) => (
@@ -123,7 +150,8 @@ const Calendar = () => {
         ></input>
       </div>
       <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin, listPlugin]}
+        initialView={view}
         dayHeaderFormat={{
           weekday: "long",
         }}
@@ -138,7 +166,9 @@ const Calendar = () => {
           center: "",
           right: "",
         }}
-        initialView="dayGridMonth"
+        weekNumberClassNames="weekNum"
+        weekNumbers={true}
+        weekNumberFormat={{ week: "numeric" }}
         events={event}
         droppable={true}
         selectable={true}
