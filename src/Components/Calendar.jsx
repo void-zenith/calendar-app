@@ -4,6 +4,7 @@ import FullCalendar from '@fullcalendar/react'
 import interactionPlugin from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
 
 import Modal from './Modal'
 import { editEvent as updateEvent, eventList } from '../Features/Calendar/EventSlice'
@@ -67,7 +68,7 @@ const Calendar = () => {
       </div>
 
       <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
         dayHeaderFormat={{
           weekday: 'long',
         }}
@@ -80,7 +81,7 @@ const Calendar = () => {
         headerToolbar={{
           left: 'prev title next',
           center: '',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay, eventGrid',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,listDay',
         }}
         initialView="dayGridMonth"
         events={event}
