@@ -16,16 +16,16 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
       ? {
           title: '',
           calendar: '',
-          color: 'red',
+          color: 'blue',
           start: event.start,
           end: event.end,
           participants: '',
           description: '',
         }
       : {
-          title: event.event?._def.title,
+          title: event.event._def.title,
           calendar: '',
-          color: 'red',
+          color: event.event._def.extendedProps.color,
           start: event.event._instance.range.start,
           end: event.event._instance.range.end,
           Participation: event.event._def.extendedProps.Participation,
@@ -63,8 +63,7 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
       <div className="create-event__header">
         <h1>{label} Event</h1>
 
-        <Colorpicker />
-
+        <Colorpicker color={formData.color} setColor={(e) => setFormData({ ...formData, color: e.target.value })} />
         <select className="choose-calendar">
           <option value="calendar">Calendar</option>
           <option value="calendar">User</option>
