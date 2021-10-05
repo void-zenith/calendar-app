@@ -12,11 +12,16 @@ import listPlugin from "@fullcalendar/list";
 import CreateEvent from "./CreateEvent";
 import DescribeEvent from "./DescribeEvent";
 import { useDispatch } from "react-redux";
-import { editEvent, selectEvent, unselect } from "../Features/Calendar/EventSlice";
+import {
+  editEvent,
+  selectEvent,
+  unselect,
+} from "../Features/Calendar/EventSlice";
 import { goToAddCalendar } from "../Features/Calendar/LayoutSlice";
 import { selectCalendar } from "../Features/Calendar/EventSlice";
 import { getCalendar, getEvents } from "../Features/Calendar/EventSlice";
 import { emptyList, eventsList } from "../Features/Calendar/EventSlice";
+import SearchIcon from "../Icons/SearchIcon";
 
 const Calendar = () => {
   const dispatch = useDispatch();
@@ -113,7 +118,8 @@ const Calendar = () => {
                 setShowMenu(false);
               }}
               position={position}
-              label="Create New"></CreateEvent>
+              label="Create New"
+            ></CreateEvent>
           )}
           {showMode === "Describe" && (
             <DescribeEvent
@@ -124,7 +130,8 @@ const Calendar = () => {
               }}
               openEdit={() => {
                 setShowMode("Edit");
-              }}></DescribeEvent>
+              }}
+            ></DescribeEvent>
           )}
           {showMode === "Edit" && (
             <CreateEvent
@@ -135,19 +142,26 @@ const Calendar = () => {
                 setShowMenu(false);
               }}
               position={position}
-              label="Edit"></CreateEvent>
+              label="Edit"
+            ></CreateEvent>
           )}
         </>
       )}
       <div className="header-sel-inp">
-        <select className="" onChange={hanldeViewChange}>
+        <select
+          className="dropdown-nav viewChange-dropdown"
+          onChange={hanldeViewChange}
+        >
           {views.map((view, id) => (
             <option value={view} key={id}>
               {view}
             </option>
           ))}
         </select>
-        <select className="" onChange={handleCalendarSelect}>
+        <select
+          className="dropdown-nav calendarSelect-dropdown"
+          onChange={handleCalendarSelect}
+        >
           {calendar.map((cal, id) => (
             <option value={id} key={id}>
               {cal.name}
@@ -155,7 +169,19 @@ const Calendar = () => {
           ))}
           <option value="Add Calendar">Add Calendar</option>
         </select>
-        <input type="text" name="search" value={searchValue} placeholder="Search" onChange={hanldeSarch}></input>
+        <div className="search-container">
+          <input
+            className="input-search"
+            type="text"
+            name="search"
+            value={searchValue}
+            placeholder="Search"
+            onChange={hanldeSarch}
+          ></input>
+          <div className="icon-search">
+            <SearchIcon></SearchIcon>
+          </div>
+        </div>
       </div>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin, listPlugin]}

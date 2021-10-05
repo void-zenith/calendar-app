@@ -22,14 +22,12 @@ const CreateEvent = ({ label, start_date, end_date, close, position: [posX, posY
   };
   //for participants
   const [participants, setParticipants] = useState("");
-  const [objPart, setObjPart] = useState({});
 
   //for event bg color
   const [colour, setColor] = useState("#9EEC61");
 
   const hanldeParticipants = (e) => {
     setParticipants(e.target.value);
-    setObjPart({ email: participants });
   };
   const hanldeChangeEventTitle = (e) => {
     setEventtitle((e.target.name = e.target.value));
