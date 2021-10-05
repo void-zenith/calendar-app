@@ -136,7 +136,7 @@ const Calendar = () => {
             </option>
           ))}
         </select>
-        <select className="" onChange={handleCalendarSelect}>
+        <select className="choose-calendar" onChange={handleCalendarSelect}>
           {calendar.map((cal, id) => (
             <option value={id} key={id}>
               {cal.name}

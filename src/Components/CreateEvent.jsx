@@ -23,6 +23,8 @@ const CreateEvent = ({
 }) => {
   const dispatch = useDispatch();
   const selectedEvent = useSelector((state) => state.event.selectedEvent);
+  const calendar = useSelector((state) => state.event.calendar);
+  const selectedCalendar = useSelector((state) => state.event.selectedCalendar);
   const [selectedStartDate, setSelectedStartDate] = useState(start_date);
   const [selectedEndDate, setSelectedEndDate] = useState(end_date);
   const [eventTitle, setEventtitle] = useState("");
@@ -33,14 +35,12 @@ const CreateEvent = ({
   };
   //for participants
   const [participants, setParticipants] = useState("");
-  const [objPart, setObjPart] = useState({});
 
   //for event bg color
   const [color, setColor] = useState("#9EEC61");
 
   const hanldeParticipants = (e) => {
     setParticipants(e.target.value);
-    setObjPart({ email: participants });
   };
   const hanldeChangeEventTitle = (e) => {
     setEventtitle((e.target.name = e.target.value));
@@ -122,8 +122,11 @@ const CreateEvent = ({
           ))}
         </div>
         <select className="choose-calendar">
-          <option value="calendar">Calendar</option>
-          <option value="calendar">User</option>
+          {calendar.map((cal, id) => (
+            <option value={id} key={id}>
+              {cal.name}
+            </option>
+          ))}
         </select>
         <Close onClick={handleClose}></Close>
       </div>
