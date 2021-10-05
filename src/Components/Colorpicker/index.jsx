@@ -1,7 +1,7 @@
 import React from 'react'
 import './styles.scss'
 
-const colors = ['#9EEC61', '#E83A3A', '#37DCDC', '#376FDC', '#FF8E09']
+// const colors = ['#9EEC61', '#E83A3A', '#37DCDC', '#376FDC', '#FF8E09']
 
 const ColorPicker = () => {
   return (

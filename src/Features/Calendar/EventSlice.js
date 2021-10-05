@@ -27,6 +27,7 @@ const EventSlice = createSlice({
       state.events = [...state.events, action.payload]
     },
     editEvent: (state, action) => {
+      console.log('actions', action.payload)
       state.events = state.events.map((ev) => (ev.id === action.payload.id ? action.payload : ev))
     },
     removeEvent: (state, action) => {
@@ -56,5 +57,7 @@ const EventSlice = createSlice({
 })
 
 export const { createEvent, editEvent, selectEvent, unselect, removeEvent } = EventSlice.actions
+
+export const eventList = (state) => state.event.events
 
 export default EventSlice.reducer
