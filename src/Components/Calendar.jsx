@@ -12,16 +12,16 @@ import listPlugin from "@fullcalendar/list";
 import CreateEvent from "./CreateEvent";
 import DescribeEvent from "./DescribeEvent";
 import { useDispatch } from "react-redux";
-import { selectEvent, unselect } from "../Features/Calendar/EventSlice";
+import { editEvent, selectEvent, unselect } from "../Features/Calendar/EventSlice";
 import { goToAddCalendar } from "../Features/Calendar/LayoutSlice";
 import { selectCalendar } from "../Features/Calendar/EventSlice";
 import { getCalendar, getEvents } from "../Features/Calendar/EventSlice";
 import { emptyList } from "../Features/Calendar/EventSlice";
+
 const Calendar = () => {
   const calendar = useSelector((state) => state.event.calendar);
-  const selCal = useSelector((state) => state.event.selectedCalendar);
-  const allEv = useSelector((state) => state.event.events);
-  const event = selCal !== null ? selCal.events : allEv;
+  // const selCal = useSelector((state) => state.event.selectedCalendar);
+  const eventList = useSelector((state) => state.event.events);
 
   // const getSelectedCalendarEvent = selCal.
   const dispatch = useDispatch();
@@ -64,6 +64,21 @@ const Calendar = () => {
     setShowMode("Describe");
   };
 
+  const handleEventChange = (e) => {
+    const newEvent = {
+      id: parseInt(e.event.id),
+      title: e.event._def.title,
+      allDay: e.oldEvent.allDay,
+      color: e.oldEvent.backgroundColor,
+      start: e.event._instance.range.start,
+      end: e.event._instance.range.end,
+      Participation: e.oldEvent.extendedProps.Participation,
+      description: e.event.extendedProps.description,
+    };
+    console.log(newEvent);
+    dispatch(editEvent(newEvent));
+  };
+
   const handleCalendarSelect = (e) => {
     console.log(e.target.value);
     if (e.target.value === "Add Calendar") {
@@ -99,8 +114,7 @@ const Calendar = () => {
                 setShowMenu(false);
               }}
               position={position}
-              label="Create New"
-            ></CreateEvent>
+              label="Create New"></CreateEvent>
           )}
           {showMode === "Describe" && (
             <DescribeEvent
@@ -111,8 +125,7 @@ const Calendar = () => {
               }}
               openEdit={() => {
                 setShowMode("Edit");
-              }}
-            ></DescribeEvent>
+              }}></DescribeEvent>
           )}
           {showMode === "Edit" && (
             <CreateEvent
@@ -123,8 +136,7 @@ const Calendar = () => {
                 setShowMenu(false);
               }}
               position={position}
-              label="Edit"
-            ></CreateEvent>
+              label="Edit"></CreateEvent>
           )}
         </>
       )}
@@ -144,17 +156,12 @@ const Calendar = () => {
           ))}
           <option value="Add Calendar">Add Calendar</option>
         </select>
-        <input
-          type="text"
-          name="search"
-          value={searchValue}
-          placeholder="Search"
-          onChange={hanldeSarch}
-        ></input>
+        <input type="text" name="search" value={searchValue} placeholder="Search" onChange={hanldeSarch}></input>
       </div>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin, listPlugin]}
         initialView={view}
+        changeView={view}
         dayHeaderFormat={{
           weekday: "long",
         }}
@@ -167,18 +174,23 @@ const Calendar = () => {
         headerToolbar={{
           left: "prev title next",
           center: "",
-          right: "",
+          right: "dayGridMonth,timeGridWeek,listWeek",
         }}
         weekNumberClassNames="weekNum"
         weekNumbers={true}
         weekNumberFormat={{ week: "numeric" }}
-        events={event}
-        droppable={true}
+        events={eventList}
+        editable={true}
         selectable={true}
+        eventResize={true}
+        selectMirror={true}
+        dayMaxEvents={true}
         eventDurationEditable={true}
-        eventClick={handleEventClick}
+        eventResizableFromStart={true}
         dateClick={handleDateClick}
-      ></FullCalendar>
+        eventClick={handleEventClick}
+        eventChange={handleEventChange}
+      />
     </>
   );
 };

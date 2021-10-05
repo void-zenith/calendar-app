@@ -1,12 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  get_all_calendar,
-  get_all_events,
-  post_event,
-  cancel_event,
-  edit_event,
-} from "./CalendarAPI";
+import { get_all_calendar, get_all_events, post_event, cancel_event, edit_event } from "./CalendarAPI";
 
 const initialState = {
   isLoading: false,
@@ -23,19 +17,13 @@ export const getEvents = createAsyncThunk("event/getEvents", async () => {
   return await get_all_events();
 });
 
-export const postEvent = createAsyncThunk(
-  "event/postEvent",
-  async (eventData) => {
-    return await post_event(eventData);
-  }
-);
+export const postEvent = createAsyncThunk("event/postEvent", async (eventData) => {
+  return await post_event(eventData);
+});
 
-export const editEvent = createAsyncThunk(
-  "event/editEvent",
-  async (eventData) => {
-    return await edit_event(eventData);
-  }
-);
+export const editEvent = createAsyncThunk("event/editEvent", async (eventData) => {
+  return await edit_event(eventData);
+});
 export const cancelEvent = createAsyncThunk("event/cancelEvent", async (id) => {
   return await cancel_event(id);
 });
@@ -107,6 +95,7 @@ const EventSlice = createSlice({
       })
       .addCase(postEvent.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.events.push(action.payload.data);
       })
       .addCase(postEvent.rejected, (state, action) => {
         state.isLoading = false;
@@ -126,6 +115,7 @@ const EventSlice = createSlice({
       })
       .addCase(editEvent.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.events = state.events.map((ev) => (ev.id === action.payload.data.id ? action.payload.data : ev));
       })
       .addCase(editEvent.rejected, (state, action) => {
         state.isLoading = false;
@@ -133,12 +123,6 @@ const EventSlice = createSlice({
   },
 });
 
-export const {
-  emptyList,
-  selectEvent,
-  unselect,
-  createCalendar,
-  selectCalendar,
-} = EventSlice.actions;
+export const { emptyList, selectEvent, unselect, createCalendar, selectCalendar } = EventSlice.actions;
 
 export default EventSlice.reducer;
