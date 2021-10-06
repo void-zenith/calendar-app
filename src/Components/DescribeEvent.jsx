@@ -31,12 +31,11 @@ const DescribeEvent = ({ event, handleClose, openEdit }) => {
         </div>
         <div className='participation__container'>
           <h2>Participation</h2>
-          {eventDetails.extendedProps.participants &&
-            eventDetails.extendedProps.participants.map((ev, id) => (
-              <div className='partFlex' key={id}>
-                <p className='paraFlex'>{ev.email}</p>
-              </div>
-            ))}
+          {eventDetails.extendedProps.participants && (
+            <div className='partFlex'>
+              <p className='paraFlex'>{eventDetails.extendedProps.participants}</p>
+            </div>
+          )}
         </div>
         <div className='description__container'>
           <h2>Description</h2>

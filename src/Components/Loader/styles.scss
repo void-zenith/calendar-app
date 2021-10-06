@@ -1,34 +1,26 @@
 .box {
   display: inline-block;
-  width: 200px;
-  height: 200px;
-  border: 1px solid currentcolor;
+  //   width: 200px;
+  //   height: 200px;
+  //   border: 1px solid #fff;
   border-radius: 3px;
   font-size: 30px;
-  padding: 1em;
-  position: relative;
-  margin-bottom: 0.25em;
-  vertical-align: top;
-  transition: 0.3s color, 0.3s border, 0.3s transform, 0.3s opacity;
-  // &:not(:hover) {
-  // 	[class*="loader-"] {
-  // 		animation: none;
-  // 		&:before, &:after {
-  // 			animation: none;
-  // 		}
-  // 	}
-  // }
-  &:hover {
-    color: #fff; //#d60b52;
-    background-color: rgba(0, 0, 0, 0.1);
-    font-size: 0;
-    padding: 0;
-    border-width: 3px;
-    line-height: 200px;
-    opacity: 1;
-    transform: scale(1.2);
-    z-index: 2;
-  }
+  padding: 3px;
+  //   position: relative;
+  //   margin-bottom: 0.25em;
+  //   vertical-align: top;
+  //   transition: 0.3s color, 0.3s border, 0.3s transform, 0.3s opacity;
+  //   &:hover {
+  //     color: #fff; //#d60b52;
+  //     background-color: rgba(0, 0, 0, 0.1);
+  //     font-size: 0;
+  //     padding: 0;
+  //     border-width: 3px;
+  //     line-height: 200px;
+  //     opacity: 1;
+  //     transform: scale(1.2);
+  //     z-index: 2;
+  //   }
 }
 [class*="loader-"] {
   font-size: 70px;
@@ -84,6 +76,7 @@
 
 .loader-16 {
   transform: rotateZ(45deg);
+  color: #fff;
   perspective: 1000px;
   border-radius: 50%;
   &:before,

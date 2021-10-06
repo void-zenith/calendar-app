@@ -19,7 +19,7 @@ export const createEvent = createAsyncThunk("event/create", async (event) => {
   return await api.create(event)
 })
 export const editEvent = createAsyncThunk("event/patch", async (event) => {
-  return await api.edit(event)
+  return api.edit(event)
 })
 export const deleteEvent = createAsyncThunk("event/delete", async (id) => {
   await api.remove(id)
@@ -96,7 +96,7 @@ export const { clear } = EventSlice.actions
 
 export const eventList = (state) => state.event.events
 
-export const eventsLoading = (state) => state.calendar.isLoading
-export const eventError = (state) => state.calendar.error
+export const eventsLoading = (state) => state.event.isLoading
+export const eventError = (state) => state.event.error
 
 export default EventSlice.reducer

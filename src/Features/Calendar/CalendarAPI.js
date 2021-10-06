@@ -1,6 +1,6 @@
 import axios from "axios"
 
-let url = "http://3005-49-244-39-215.ngrok.io/api";
+let url = "http://3005-49-244-39-215.ngrok.io/api"
 
 //cc30-49-244-39-215.ngrok.io/api/
 
