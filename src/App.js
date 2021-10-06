@@ -18,7 +18,7 @@ const App = () => {
     <Provider store={store}>
       <ReactToPrint
         trigger={() => (
-          <div>
+          <div className="print-btn">
             <Print></Print>
           </div>
         )}
