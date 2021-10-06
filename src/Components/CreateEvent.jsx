@@ -5,7 +5,7 @@ import Close from "../Icons/Close";
 import Button from "./Button";
 import DateFnsUtils from "@date-io/date-fns";
 import { cancelEvent, editEvent, postEvent, unselect } from "../Features/Calendar/EventSlice";
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
+import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 
 const CreateEvent = ({ label, start_date, end_date, close, position: [posX, posY] }) => {
   const dispatch = useDispatch();
@@ -104,7 +104,10 @@ const CreateEvent = ({ label, start_date, end_date, close, position: [posX, posY
   }, [selectedEvent]);
 
   return (
-    <div style={{ top: posY + "px", left: posX + "px" }} className="create-event__container">
+    <div
+      style={{ top: posY + "px", left: posX + "px" }}
+      className="create-event__container"
+    >
       <div className="create-event__header">
         <h1>{label} Event</h1>
         <div className="create-event__colorchoose">
@@ -131,10 +134,11 @@ const CreateEvent = ({ label, start_date, end_date, close, position: [posX, posY
             name="eventTitle"
             type="text"
             value={eventTitle}
-            onChange={hanldeChangeEventTitle}></input>
+            onChange={hanldeChangeEventTitle}
+          ></input>
           <div className="datepicker-container">
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
+              <DateTimePicker
                 className="date-picker date-picker__start"
                 disableToolbar
                 variant="inline"
@@ -145,11 +149,12 @@ const CreateEvent = ({ label, start_date, end_date, close, position: [posX, posY
                 onChange={setSelectedStartDate}
                 KeyboardButtonProps={{
                   "aria-label": "change date",
-                }}></KeyboardDatePicker>
+                }}
+              ></DateTimePicker>
             </MuiPickersUtilsProvider>
 
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
+              <DateTimePicker
                 className="date-picker date-picker__start"
                 disableToolbar
                 variant="inline"
@@ -160,7 +165,8 @@ const CreateEvent = ({ label, start_date, end_date, close, position: [posX, posY
                 onChange={setSelectedEndDate}
                 KeyboardButtonProps={{
                   "aria-label": "change date",
-                }}></KeyboardDatePicker>
+                }}
+              ></DateTimePicker>
             </MuiPickersUtilsProvider>
           </div>
           <input
@@ -169,24 +175,46 @@ const CreateEvent = ({ label, start_date, end_date, close, position: [posX, posY
             name="participants"
             type="text"
             value={participants}
-            onChange={hanldeParticipants}></input>
+            onChange={hanldeParticipants}
+          ></input>
           <textarea
             className="input-field__description"
             name="eventDescription"
             placeholder="Event Description"
             value={description}
             onChange={hanldeDescription}
-            type="text"></textarea>
+            type="text"
+          ></textarea>
           <div className="button-form__container">
             {label === "Create New" ? (
-              <Button onClick={handleClose} size="default" variant="outlined" label="Cancel"></Button>
+              <Button
+                onClick={handleClose}
+                size="default"
+                variant="outlined"
+                label="Cancel"
+              ></Button>
             ) : (
-              <Button onClick={handleCancel} size="default" variant="outlined" label="Cancel Event"></Button>
+              <Button
+                onClick={handleCancel}
+                size="default"
+                variant="outlined"
+                label="Cancel Event"
+              ></Button>
             )}
             {label === "Create New" ? (
-              <Button onClick={handeCreateEvent} size="large" variant="primary" label="Create Event"></Button>
+              <Button
+                onClick={handeCreateEvent}
+                size="large"
+                variant="primary"
+                label="Create Event"
+              ></Button>
             ) : (
-              <Button onClick={handleUpdateEvent} size="large" variant="primary" label="Save"></Button>
+              <Button
+                onClick={handleUpdateEvent}
+                size="large"
+                variant="primary"
+                label="Save"
+              ></Button>
             )}
           </div>
         </form>

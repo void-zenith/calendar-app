@@ -92,7 +92,6 @@ const Calendar = () => {
   };
 
   const handleCalendarSelect = (e) => {
-    console.log(e.target.value);
     if (e.target.value === "Add Calendar") {
       dispatch(goToAddCalendar());
     } else {
