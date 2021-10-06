@@ -6,7 +6,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/picker
 import Close from "../Icons/Close"
 import Button from "./Button"
 import Colorpicker from "./Colorpicker"
-import { createEvent, editEvent } from "../Features/Calendar/EventSlice"
+import { createEvent, deleteEvent, editEvent } from "../Features/Calendar/EventSlice"
 
 const CreateEvent = ({ event, handleClose, label, type }) => {
   const dispatch = useDispatch()
@@ -37,6 +37,12 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
+  }
+
+  const handleDelete = (e) => {
+    e.preventDefault()
+    dispatch(deleteEvent(parseInt(event.event.id)))
+    handleClose()
   }
 
   const handleSubmit = (e) => {
@@ -140,7 +146,7 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
             ) : (
               <Button
                 type='button'
-                onClick={handleClose}
+                onClick={handleDelete}
                 size='default'
                 variant='outlined'
                 label='Cancel Event'></Button>

@@ -2,22 +2,26 @@ import React from "react"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import "./Styles/styles.scss"
 import store from "./Redux/Store"
-import { Provider } from "react-redux"
+import { Provider, useSelector } from "react-redux"
 
 import AddCalendar from "./Components/AddCalendar"
 import Calendar from "./Components/Calendar"
 import Home from "./Container/Home"
+import { eventError, eventsLoading } from "./Features/Calendar/EventSlice"
 // import ReactToPrint from "react-to-print"
 
 const App = () => {
   // const componentRef = useRef()
+
   return (
     <Provider store={store}>
       <Router>
         <div className='main-container'>
           <div className='navbar-container'></div>
           <div className='body-container'>
-            <div className='left-container'></div>
+            <div className='left-container'>
+              <Nav />
+            </div>
             <div className='calendar-container'>
               <Switch>
                 <Route exact path='/' component={Home} />
@@ -51,3 +55,14 @@ export default App
 //     return <Home />
 //   }
 // }
+
+const Nav = () => {
+  const evLoading = useSelector(eventsLoading)
+  const evError = useSelector(eventError)
+  return (
+    <>
+      {evLoading && <h4>Loading events...</h4>}
+      {evError && <h4>Something went wrong ...</h4>}
+    </>
+  )
+}

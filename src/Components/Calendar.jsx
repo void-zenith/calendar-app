@@ -5,17 +5,10 @@ import interactionPlugin from "@fullcalendar/interaction"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import listPlugin from "@fullcalendar/list"
-import { getCalendar, calendarList, calendarLoading, selectCalendar } from "../Features/Calendar/CalendarSlice"
+import { getCalendar, calendarList, calendarLoading } from "../Features/Calendar/CalendarSlice"
 
 import Modal from "./Modal"
-import {
-  editEvent as updateEvent,
-  eventList,
-  getAllEvents,
-  eventError,
-  eventsLoading,
-} from "../Features/Calendar/EventSlice"
-// import { calendarSelected } from "../Features/Calendar/CalendarSlice"
+import { editEvent as updateEvent, eventList, getAllEvents } from "../Features/Calendar/EventSlice"
 
 const Calendar = ({ history }) => {
   const [calendar, setSalendar] = useState(2)
@@ -27,8 +20,6 @@ const Calendar = ({ history }) => {
   useEffect(() => dispatch(getAllEvents(calendar)), [dispatch, calendar])
 
   const event = useSelector(eventList)
-  const evLoading = useSelector(eventsLoading)
-  const evError = useSelector(eventError)
 
   const [searchValue, setSearchValue] = useState("")
   const [view, setView] = useState("dayGridMonth")
@@ -82,8 +73,6 @@ const Calendar = ({ history }) => {
               </option>
             ))}
         </select>
-        {evLoading && <h4>Loading ...</h4>}
-        {evError && <h4>Something went wrong ...</h4>}
         <input
           type='text'
           name='search'
@@ -110,7 +99,7 @@ const Calendar = ({ history }) => {
         }}
         initialView='dayGridMonth'
         views={view}
-        events={event}
+        events={event.filter((val) => val.title.toLowerCase().includes(searchValue.toLowerCase()))}
         editable={true}
         selectable={true}
         selectMirror={true}

@@ -83,7 +83,7 @@ const EventSlice = createSlice({
       })
       .addCase(deleteEvent.fulfilled, (state, action) => {
         state.isLoading = false
-        state.events = state.events.filter((ev) => ev.id === action.payload.id)
+        state.events = state.events.filter((ev) => ev.id !== action.payload)
       })
       .addCase(deleteEvent.rejected, (state) => {
         state.isLoading = false
