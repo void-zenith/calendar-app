@@ -54,6 +54,7 @@ const Calendar = ({ history }) => {
             type={modal.type}
             event={modal.event}
             properties={modal.properties}
+            calendar={calendar}
           />
         )}
       </div>

@@ -8,27 +8,27 @@ import Button from "./Button"
 import Colorpicker from "./Colorpicker"
 import { createEvent, deleteEvent, editEvent } from "../Features/Calendar/EventSlice"
 
-const CreateEvent = ({ event, handleClose, label, type }) => {
+const CreateEvent = ({ event, handleClose, label, type, calendar }) => {
   const dispatch = useDispatch()
   console.log(event.event)
   let initState =
     type === "add"
       ? {
           title: "",
-          calendar: "",
+          calendar: calendar,
           color: "blue",
           start: event.start,
           end: event.end,
-          participants: [],
+          participants: "",
           description: "",
         }
       : {
           title: event.event._def.title,
-          calendar: "",
+          calendar: calendar,
           color: event.event._def.extendedProps.color,
           start: event.event._instance.range.start,
           end: event.event._instance.range.end,
-          Participation: event.event._def.extendedProps.Participation,
+          participants: event.event._def.extendedProps.participants,
           description: event.event._def.extendedProps.description,
         }
 
@@ -50,12 +50,11 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
 
     if (type === "add") {
       console.log("Add submit")
-      dispatch(createEvent({ ...formData, participants: [{ email: formData.participants }] }))
+      dispatch(createEvent(formData))
     } else {
       console.log("Edit date change")
       const newEvent = {
         ...formData,
-        participants: [{ email: formData.participants }],
         id: parseInt(event.event.id),
         allDay: true,
       }
