@@ -1,63 +1,102 @@
-import * as api from './CalendarAPI'
+import * as api from "./CalendarAPI"
 
-import { createSlice } from '@reduxjs/toolkit'
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import { events } from './Event.data'
-import { get_all_calendar } from './CalendarAPI'
+import { createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk } from "@reduxjs/toolkit"
+// import { events } from "./Event.data"
 
 const initialState = {
   isLoading: false,
-  calendar: [],
-  events: [...events],
-  selected: null,
+  error: false,
+  // events: [...events],
+  events: [],
 }
-export const getCalendar = createAsyncThunk('event/getCalendar', async () => {
-  return await get_all_calendar()
+
+export const getAllEvents = createAsyncThunk("event/get", async (id) => {
+  return await api.getCalendarEvents(id)
 })
 
-export const postEvent = createAsyncThunk('event/getCalendar', async (event) => {
+export const createEvent = createAsyncThunk("event/create", async (event) => {
   return await api.create(event)
+})
+export const editEvent = createAsyncThunk("event/patch", async (event, id) => {
+  return await api.edit(event, id)
+})
+export const deleteEvent = createAsyncThunk("event/delete", async (id) => {
+  await api.remove(id)
+  return id
 })
 
 const EventSlice = createSlice({
-  name: 'event',
+  name: "event",
   initialState,
   reducers: {
-    createEvent: (state, action) => {
-      state.events = [...state.events, action.payload]
-    },
-    editEvent: (state, action) => {
-      console.log('actions', action.payload)
-      state.events = state.events.map((ev) => (ev.id === action.payload.id ? action.payload : ev))
-    },
-    removeEvent: (state, action) => {
-      state.events = state.events.filter((ev) => ev.id !== action.payload)
-    },
-    selectEvent: (state, action) => {
-      state.selected = action.payload
-    },
-    unselect: (state) => {
-      state.selected = null
+    clear: (state) => {
+      state.events = []
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getCalendar.pending, (state) => {
+      .addCase(getAllEvents.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(getCalendar.fulfilled, (state, action) => {
-        state.events.push(...action.payload.data)
-        console.log(events)
+      .addCase(getAllEvents.fulfilled, (state, action) => {
+        state.events = action.payload.data.events
         state.isLoading = false
       })
-      .addCase(getCalendar.rejected, (state, action) => {
+      .addCase(getAllEvents.rejected, (state) => {
+        state.isLoading = false
+        state.error = true
+      })
+
+      // Create
+      .addCase(createEvent.pending, (state) => {
         state.isLoading = true
+      })
+      .addCase(createEvent.fulfilled, (state, action) => {
+        state.isLoading = false
+        // state.events = [...state.events, action.payload.data]
+        state.events.push(action.payload.data)
+      })
+      .addCase(createEvent.rejected, (state) => {
+        state.isLoading = false
+        state.error = true
+      })
+
+      // Update
+      .addCase(editEvent.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(editEvent.fulfilled, (state, action) => {
+        state.isLoading = false
+        // const newEvents = state.events.map((ev) => (ev.id === action.payload.data.id ? action.payload.data : ev))
+        state.events = state.events.map((ev) => (ev.id === action.payload.data.id ? action.payload.data : ev))
+      })
+      // state.events = [...state.events, action.payload]
+      .addCase(editEvent.rejected, (state) => {
+        state.isLoading = false
+        state.error = true
+      })
+
+      // Delete
+      .addCase(deleteEvent.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteEvent.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.events = state.events.filter((ev) => ev.id === action.payload.id)
+      })
+      .addCase(deleteEvent.rejected, (state) => {
+        state.isLoading = false
+        state.error = true
       })
   },
 })
 
-export const { createEvent, editEvent, selectEvent, unselect, removeEvent } = EventSlice.actions
+export const { clear } = EventSlice.actions
 
 export const eventList = (state) => state.event.events
+
+export const eventsLoading = (state) => state.calendar.isLoading
+export const eventError = (state) => state.calendar.error
 
 export default EventSlice.reducer

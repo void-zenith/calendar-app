@@ -1,51 +1,46 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { goToDisplayAll } from "../Features/Calendar/LayoutSlice";
-import Button from "./Button";
+import React, { useState } from "react"
+import { useDispatch } from "react-redux"
+import Button from "./Button"
+import { createCalendar } from "../Features/Calendar/CalendarSlice"
 
-const AddCalendar = () => {
-  const dispatch = useDispatch();
+const AddCalendar = ({ history }) => {
+  const dispatch = useDispatch()
+  const [formData, setFormdata] = useState({ name: "", description: "", events: [] })
 
-  const handleCancel = (e) => {
-    e.preventDefault();
-    dispatch(goToDisplayAll());
-  };
-  const handleSave = (e) => {
-    e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(formData)
+    dispatch(createCalendar(formData))
+    history.push("/calendar")
   }
   return (
-    <div className="addcalender-container">
+    <div className='addcalender-container'>
       <h1>Create a new calendar</h1>
-      <form className="addcalendar-form">
+      <form className='addcalendar-form'>
         <input
-          className="input-field input-field__calendarName"
-          type="text"
-          placeholder="Calendar Name"
-          name="CalendarName"
-        ></input>
+          className='input-field input-field__calendarName'
+          type='text'
+          placeholder='Calendar Name'
+          name='name'
+          value={formData.name}
+          onChange={(e) => setFormdata({ ...formData, name: e.target.value })}
+        />
         <textarea
-          className="input-field input-field__description"
-          type="text"
-          placeholder="Description"
-        ></textarea>
-        <div className="button-form__container">
-          <Button
-            onClick={handleCancel}
-            size="default"
-            variant="outlined"
-            label="Cancel"
-          ></Button>
-          <Button
-            onClick={handleSave}
-            size="large"
-            variant="primary"
-            label="Save"
-          ></Button>
+          className='input-field input-field__description'
+          type='text'
+          placeholder='Description'
+          name='description'
+          value={formData.description}
+          onChange={(e) => setFormdata({ ...formData, description: e.target.value })}
+        />
+
+        <div className='button-form__container'>
+          <Button type='button' onClick={() => history.push("/")} size='default' variant='outlined' label='Cancel' />
+          <Button type='sumbit' onClick={handleSubmit} size='large' variant='primary' label='Save'></Button>
         </div>
       </form>
-      <button onClick={handleCancel}>Go back</button>
     </div>
-  );
-};
+  )
+}
 
-export default AddCalendar;
+export default AddCalendar
