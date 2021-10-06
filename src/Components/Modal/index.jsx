@@ -14,7 +14,7 @@ const Modal = ({ handleClose, event, type, openEdit }) => {
         className="modal"
         style={{
           position: 'absolute',
-          top: `${posY > 270 ? posY - 340 : posY - 10}px`,
+          top: `${posY > 270 ? posY - 200 : posY - 10}px`,
           left: `${posX > 780 ? posX - 550 : posX}px`,
         }}>
         {type === 'view' ? (
