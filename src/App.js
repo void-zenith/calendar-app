@@ -10,6 +10,7 @@ import Home from "./Container/Home"
 import { eventError, eventsLoading } from "./Features/Calendar/EventSlice"
 import Print from "./Icons/PrintIcon"
 import ReactToPrint from "react-to-print"
+import Loader from "./Components/Loader/Loader"
 
 const App = () => {
   const componentRef = useRef()
@@ -61,7 +62,7 @@ const Nav = () => {
   const evError = useSelector(eventError)
   return (
     <>
-      {evLoading && <h4>Loading events...</h4>}
+      {evLoading && <Loader />}
       {evError && <h4>Something went wrong ...</h4>}
     </>
   )
