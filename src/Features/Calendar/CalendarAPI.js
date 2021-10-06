@@ -1,8 +1,6 @@
 import axios from "axios"
 
-let url = "https://3005-49-244-39-215.ngrok.io/api"
-
-//cc30-49-244-39-215.ngrok.io/api/
+let url = "https://f5de-49-244-39-215.ngrok.io/api"
 
 export const getAllCalendar = async () => await axios.get(`${url}/calendar/`)
 

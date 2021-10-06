@@ -41,6 +41,7 @@ const Calendar = ({ history }) => {
       description: e.event.extendedProps.description,
       calendar: calendar,
     }
+    !newEvent.participants && delete newEvent.participants
     console.log(newEvent, e)
     dispatch(updateEvent(newEvent))
   }
