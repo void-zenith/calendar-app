@@ -50,7 +50,9 @@ const CreateEvent = ({ event, handleClose, label, type, calendar }) => {
 
     if (type === "add") {
       console.log("Add submit")
-      dispatch(createEvent(formData))
+      const submit = { ...formData }
+      !formData.participants && delete submit.participants
+      dispatch(createEvent(submit))
     } else {
       console.log("Edit date change")
       const newEvent = {
@@ -58,6 +60,7 @@ const CreateEvent = ({ event, handleClose, label, type, calendar }) => {
         id: parseInt(event.event.id),
         allDay: true,
       }
+      !formData.participants && delete newEvent.participants
       console.log(newEvent)
       dispatch(editEvent(newEvent))
     }
@@ -141,7 +144,7 @@ const CreateEvent = ({ event, handleClose, label, type, calendar }) => {
           />
 
           <div className='button-form__container'>
-            {label === "Create New" ? (
+            {label === "Create" ? (
               <Button type='button' onClick={handleClose} size='default' variant='outlined' label='Cancel'></Button>
             ) : (
               <Button
@@ -151,7 +154,7 @@ const CreateEvent = ({ event, handleClose, label, type, calendar }) => {
                 variant='outlined'
                 label='Cancel Event'></Button>
             )}
-            {label === "Create New" ? (
+            {label === "Create" ? (
               <Button type='submit' size='large' variant='primary' label='Create Event'></Button>
             ) : (
               <Button type='submit' size='large' variant='primary' label='Save'></Button>

@@ -20,7 +20,7 @@ const Modal = ({ handleClose, event, type, openEdit, calendar }) => {
         {type === "view" ? (
           <DescribeEvent event={event} handleClose={handleClose} openEdit={openEdit} />
         ) : type === "add" ? (
-          <CreateEvent event={event} handleClose={handleClose} type={type} calendar={calendar} />
+          <CreateEvent event={event} handleClose={handleClose} type={type} calendar={calendar} label='Create' />
         ) : (
           <CreateEvent event={event} handleClose={handleClose} type={type} calendar={calendar} />
         )}
