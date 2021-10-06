@@ -26,6 +26,8 @@ const Calendar = ({ history }) => {
   const [view, setView] = useState("dayGridMonth")
   const [modal, setModal] = useState({ type: "view", show: false, event: {}, properties: null })
 
+  false && setView("sdcs")
+
   const editEvent = (e) => {
     console.log("Edit date change")
     const newEvent = {
@@ -61,12 +63,13 @@ const Calendar = ({ history }) => {
 
       <div className='header-sel-inp'>
         {/* <select onChange={handleCalendarView}> */}
-        <select className='dropdown-nav calendarSelect-dropdown' onChange={(e) => setView(e.target.value)}>
+        {/* <select className='dropdown-nav calendarSelect-dropdown' onChange={(e) => setView(e.target.value)}>
           <option value='dayGridMonth'>Month</option>
           <option value='timeGridWeek'>Week</option>
           <option value='timeGridDay'>Day</option>
           <option value='listDay'>Event</option>
-        </select>
+        </select> */}
+        Select calendar
         <select className='dropdown-nav viewChange-dropdown' onChange={(e) => setSalendar(e.target.value)}>
           {!loading &&
             calendars.map((c) => (
@@ -75,7 +78,6 @@ const Calendar = ({ history }) => {
               </option>
             ))}
         </select>
-
         <div className='search-container'>
           <input
             className='input-search'
