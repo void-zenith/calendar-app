@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import DateFnsUtils from "@date-io/date-fns"
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers"
+import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers"
 
 import Close from "../Icons/Close"
 import Button from "./Button"
@@ -50,11 +50,12 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
 
     if (type === "add") {
       console.log("Add submit")
-      dispatch(createEvent(formData))
+      dispatch(createEvent({ ...formData, participants: [{ email: formData.participants }] }))
     } else {
       console.log("Edit date change")
       const newEvent = {
         ...formData,
+        participants: [{ email: formData.participants }],
         id: parseInt(event.event.id),
         allDay: true,
       }
@@ -90,27 +91,27 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
 
           <div className='datepicker-container'>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
+              <DateTimePicker
                 className='date-picker date-picker__start'
                 disableToolbar
                 variant='inline'
-                format='dd/MM/yyyy'
+                format='dd/MM/yyyy hh:mm'
                 margin='normal'
                 id='Date-picker'
                 name='start'
                 value={formData.start}
-                onChange={(e) => setFormData({ ...formData, end: e })}
+                onChange={(e) => setFormData({ ...formData, start: e })}
                 KeyboardButtonProps={{
                   "aria-label": "change date",
-                }}></KeyboardDatePicker>
+                }}></DateTimePicker>
             </MuiPickersUtilsProvider>
 
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
+              <DateTimePicker
                 className='date-picker date-picker__start'
                 disableToolbar
                 variant='inline'
-                format='dd/MM/yyyy'
+                format='dd/MM/yyyy hh:mm'
                 margin='normal'
                 id='Date-picker'
                 name='end'
@@ -118,7 +119,7 @@ const CreateEvent = ({ event, handleClose, label, type }) => {
                 onChange={(e) => setFormData({ ...formData, end: e })}
                 KeyboardButtonProps={{
                   "aria-label": "change date",
-                }}></KeyboardDatePicker>
+                }}></DateTimePicker>
             </MuiPickersUtilsProvider>
           </div>
 

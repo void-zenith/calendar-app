@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef } from "react"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import "./Styles/styles.scss"
 import store from "./Redux/Store"
@@ -8,13 +8,32 @@ import AddCalendar from "./Components/AddCalendar"
 import Calendar from "./Components/Calendar"
 import Home from "./Container/Home"
 import { eventError, eventsLoading } from "./Features/Calendar/EventSlice"
-// import ReactToPrint from "react-to-print"
+import Print from "./Icons/PrintIcon"
+import ReactToPrint from "react-to-print"
 
 const App = () => {
-  // const componentRef = useRef()
-
+  const componentRef = useRef()
   return (
     <Provider store={store}>
+      <ReactToPrint
+        trigger={() => (
+          <div>
+            <Print></Print>
+          </div>
+        )}
+        documentTitle='Awesome calendar'
+        content={() => componentRef.current}
+      />
+      <ClassBased ref={componentRef} />
+    </Provider>
+  )
+}
+
+export default App
+
+class ClassBased extends React.Component {
+  render() {
+    return (
       <Router>
         <div className='main-container'>
           <div className='navbar-container'></div>
@@ -33,28 +52,9 @@ const App = () => {
           </div>
         </div>
       </Router>
-    </Provider>
-
-    // <div>
-    //   <Provider store={store}>
-    //     <ReactToPrint
-    //       trigger={() => <button>Print this out!</button>}
-    //       documentTitle="Awesome calendar"
-    //       content={() => componentRef.current}
-    //     />
-    //     <ClassBased ref={componentRef} />
-    //   </Provider>
-    // </div>
-  )
+    )
+  }
 }
-
-export default App
-
-// class ClassBased extends React.Component {
-//   render() {
-//     return <Home />
-//   }
-// }
 
 const Nav = () => {
   const evLoading = useSelector(eventsLoading)

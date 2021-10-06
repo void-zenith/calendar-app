@@ -18,8 +18,8 @@ export const getAllEvents = createAsyncThunk("event/get", async (id) => {
 export const createEvent = createAsyncThunk("event/create", async (event) => {
   return await api.create(event)
 })
-export const editEvent = createAsyncThunk("event/patch", async (event, id) => {
-  return await api.edit(event, id)
+export const editEvent = createAsyncThunk("event/patch", async (event) => {
+  return await api.edit(event)
 })
 export const deleteEvent = createAsyncThunk("event/delete", async (id) => {
   await api.remove(id)
